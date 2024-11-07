@@ -79,6 +79,7 @@ async function scanNetwork(port = 8080) {
   const subnet = ipAddress.split('.').slice(0, 3).join('.')
 
   const promises = []
+  const serverList = []
   for (let i = 1; i <= 254; i++) {
     const ip = `${subnet}.${i}`
     promises.push(checkPort(ip, port))
@@ -91,6 +92,7 @@ async function scanNetwork(port = 8080) {
         console.log(
           `${result.value.ip}:${result.value.port} está ${result.value.status}`
         )
+        serverList.push(result.value.ip)
       } else {
         console.log(
           `${result.reason.ip}:${result.reason.port} está ${result.reason.status}`
@@ -101,7 +103,7 @@ async function scanNetwork(port = 8080) {
     console.error('Error al verificar puertos:', error)
   }
 
-  return 'fin'
+  return serverList
 }
 
 /*Funciones para obtener la dirección IP local y verificar puertos*/
